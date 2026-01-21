@@ -10,6 +10,7 @@ import { Play, Pause, RotateCcw, SkipForward } from 'lucide-react';
 import { useSimulationStore } from '@/stores/simulationStore';
 import { Button } from '@/components/ui';
 import { cn } from '@/lib/utils';
+import { AnimationSpeedControl } from './AnimationSpeedControl';
 
 export function PlaybackControls() {
   const playbackState = useSimulationStore(state => state.playbackState);
@@ -82,6 +83,11 @@ export function PlaybackControls() {
           {tick}
           {isComplete && ' (Complete)'}
         </span>
+      </div>
+      
+      {/* Animation Speed Control */}
+      <div className="mt-4 pt-4 border-t border-panel-border">
+        <AnimationSpeedControl />
       </div>
     </div>
   );

@@ -185,26 +185,46 @@ export function generateNetwork(options: GenerateNetworkOptions): {
 } {
   const { topology, nodeCount, linkDensity, canvasWidth, canvasHeight } = options;
   
-  // Generate graph based on topology
+  // Validate inputs
+  if (nodeCount < 1 || nodeCount > 10000) {
+    throw new Error(`Invalid node count: ${nodeCount}. Must be between 1 and 10000.`);
+  }
+  if (linkDensity < 0 || linkDensity > 1) {
+    throw new Error(`Invalid link density: ${linkDensity}. Must be between 0 and 1.`);
+  }
+  
+  // Generate graph based on topology with fallback
   let graph: Graph;
-  switch (topology) {
-    case 'scale-free':
-      // m parameter: number of edges to attach from new node
-      const m = Math.max(2, Math.floor(linkDensity * 5) + 1);
-      graph = generateScaleFree(nodeCount, m);
-      break;
-    case 'small-world':
-      // k parameter: each node connected to k nearest neighbors
-      const k = Math.max(4, Math.floor(linkDensity * 8) + 2);
-      graph = generateSmallWorld(nodeCount, k, 0.1);
-      break;
-    case 'random':
-      // Edge probability based on density
-      const p = 0.02 + linkDensity * 0.08;
-      graph = generateRandom(nodeCount, p);
-      break;
-    default:
-      graph = generateScaleFree(nodeCount, 3);
+  try {
+    switch (topology) {
+      case 'scale-free':
+        // m parameter: number of edges to attach from new node
+        const m = Math.max(2, Math.floor(linkDensity * 5) + 1);
+        graph = generateScaleFree(nodeCount, m);
+        break;
+      case 'small-world':
+        // k parameter: each node connected to k nearest neighbors
+        const k = Math.max(4, Math.floor(linkDensity * 8) + 2);
+        graph = generateSmallWorld(nodeCount, k, 0.1);
+        break;
+      case 'random':
+        // Edge probability based on density
+        const p = 0.02 + linkDensity * 0.08;
+        graph = generateRandom(nodeCount, p);
+        break;
+      default:
+        graph = generateScaleFree(nodeCount, 3);
+    }
+  } catch (error) {
+    // Fallback to simple random network if generation fails
+    console.error(`Failed to generate ${topology} network, falling back to random:`, error);
+    try {
+      graph = generateRandom(nodeCount, 0.05);
+    } catch (fallbackError) {
+      // Last resort: create a simple connected path
+      console.error('Fallback to random network failed, creating simple path:', fallbackError);
+      graph = createFallbackNetwork(nodeCount);
+    }
   }
   
   // Convert to simulation nodes
@@ -292,6 +312,36 @@ export function findHighestDegreeNode(nodes: SimulationNode[]): SimulationNode |
 export function findRandomNode(nodes: SimulationNode[]): SimulationNode | null {
   if (nodes.length === 0) return null;
   return nodes[Math.floor(Math.random() * nodes.length)];
+}
+
+/**
+ * Create a simple fallback network (connected path)
+ * Used as last resort if other generators fail
+ */
+function createFallbackNetwork(nodeCount: number): Graph {
+  const graph = new Graph();
+  
+  // Create nodes
+  for (let i = 0; i < nodeCount; i++) {
+    graph.addNode(i.toString());
+  }
+  
+  // Create a simple connected path
+  for (let i = 0; i < nodeCount - 1; i++) {
+    graph.addEdge(i.toString(), (i + 1).toString());
+  }
+  
+  // Add a few random edges for better connectivity
+  const additionalEdges = Math.min(nodeCount, Math.floor(nodeCount * 0.1));
+  for (let i = 0; i < additionalEdges; i++) {
+    const source = Math.floor(Math.random() * nodeCount).toString();
+    const target = Math.floor(Math.random() * nodeCount).toString();
+    if (source !== target && !graph.hasEdge(source, target)) {
+      graph.addEdge(source, target);
+    }
+  }
+  
+  return graph;
 }
 
 /**
