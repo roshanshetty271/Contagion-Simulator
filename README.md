@@ -2,8 +2,6 @@
 
 A real-time network cascade visualization that simulates both **epidemic spread** and **financial contagion** through interconnected systems.
 
-![Contagion Simulator](./public/og-image.png)
-
 ## ✨ Features
 
 ### Dual Simulation Modes
