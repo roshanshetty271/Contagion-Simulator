@@ -1,0 +1,74 @@
+<svg width="1200" height="630" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0a0a0f;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#111118;stop-opacity:1" />
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  
+  <!-- Network visualization preview -->
+  <g transform="translate(600, 315)">
+    <!-- Central infected node -->
+    <circle cx="0" cy="0" r="30" fill="#ef4444" filter="url(#glow)"/>
+    
+    <!-- Connected nodes -->
+    <line x1="0" y1="0" x2="-120" y2="-80" stroke="rgba(255,255,255,0.2)" stroke-width="2"/>
+    <line x1="0" y1="0" x2="100" y2="-100" stroke="rgba(239,68,68,0.3)" stroke-width="2"/>
+    <line x1="0" y1="0" x2="150" y2="30" stroke="rgba(239,68,68,0.3)" stroke-width="2"/>
+    <line x1="0" y1="0" x2="-80" y2="100" stroke="rgba(255,255,255,0.2)" stroke-width="2"/>
+    <line x1="0" y1="0" x2="50" y2="120" stroke="rgba(255,255,255,0.2)" stroke-width="2"/>
+    <line x1="0" y1="0" x2="-160" y2="20" stroke="rgba(255,255,255,0.2)" stroke-width="2"/>
+    
+    <circle cx="-120" cy="-80" r="18" fill="#3b82f6"/>
+    <circle cx="100" cy="-100" r="22" fill="#ef4444" filter="url(#glow)"/>
+    <circle cx="150" cy="30" r="16" fill="#ef4444" filter="url(#glow)"/>
+    <circle cx="-80" cy="100" r="20" fill="#3b82f6"/>
+    <circle cx="50" cy="120" r="14" fill="#3b82f6"/>
+    <circle cx="-160" cy="20" r="24" fill="#22c55e"/>
+    
+    <!-- Secondary connections -->
+    <line x1="100" y1="-100" x2="200" y2="-60" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+    <line x1="100" y1="-100" x2="180" y2="-150" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+    <line x1="-120" y1="-80" x2="-200" y2="-120" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+    <line x1="-120" y1="-80" x2="-180" y2="0" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+    
+    <circle cx="200" cy="-60" r="12" fill="#3b82f6"/>
+    <circle cx="180" cy="-150" r="10" fill="#3b82f6"/>
+    <circle cx="-200" cy="-120" r="14" fill="#3b82f6"/>
+    <circle cx="-180" cy="0" r="11" fill="#a855f7"/>
+  </g>
+  
+  <!-- Title -->
+  <text x="600" y="80" font-family="system-ui, sans-serif" font-size="48" font-weight="600" fill="white" text-anchor="middle">
+    Contagion Simulator
+  </text>
+  
+  <!-- Subtitle -->
+  <text x="600" y="120" font-family="system-ui, sans-serif" font-size="20" fill="#9ca3af" text-anchor="middle">
+    Network Cascade Visualization
+  </text>
+  
+  <!-- Mode badges -->
+  <g transform="translate(430, 550)">
+    <rect x="0" y="0" width="140" height="36" rx="18" fill="rgba(239,68,68,0.2)"/>
+    <text x="70" y="24" font-family="system-ui, sans-serif" font-size="14" fill="#ef4444" text-anchor="middle">
+      Epidemic Mode
+    </text>
+  </g>
+  <g transform="translate(630, 550)">
+    <rect x="0" y="0" width="140" height="36" rx="18" fill="rgba(245,158,11,0.2)"/>
+    <text x="70" y="24" font-family="system-ui, sans-serif" font-size="14" fill="#f59e0b" text-anchor="middle">
+      Financial Mode
+    </text>
+  </g>
+</svg>
